@@ -1,8 +1,20 @@
-import xml.etree.ElementTree as ET
 
+import xml.etree.ElementTree as ET
+from Matriz import Matriz
 def read_xml(root):
     mytree = ET.parse(root)
-    return mytree
+    myroot = mytree.getroot()
+    return myroot
+
+def nodos(file,n):
+    Nodos=Matriz()
+    for x in file[n].findall('posicion'):
+        Nodos.insertar(x.attrib.get('x'),x.attrib.get('y'),x.text)
+        
+    return Nodos
+
+
+
 
 
 
@@ -23,8 +35,20 @@ if __name__ == '__main__':
         if opcion == '1':
             root=input('INGRRESE LA RUTA DEL ARCHIVO:\n')
             archivo=read_xml(root)
-            print(archivo.getroot())
             
+            for child in archivo:
+                print(child.tag, child.attrib)
+               
+            #for x in archivo[0].findall('posicion'):
+                #print(x.text)
+                
+            Lista=nodos(archivo,0)
+            
+            Lista.imprimir()
+            
+
+           
+
         elif opcion == '2':
             print('aqui el dolor de cabeza')
         elif opcion == '3':
