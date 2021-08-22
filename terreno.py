@@ -1,4 +1,4 @@
-from lista_doble import dlinkedlist
+
 class terreno:
 
     def __init__(self,nombre,dimM,dimN,iniciox,inicioy,finx,finy,nodos):

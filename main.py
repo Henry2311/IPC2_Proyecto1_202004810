@@ -37,14 +37,9 @@ if __name__ == '__main__':
             archivo=read_xml(root)
             
             for child in archivo:
-                print(child.tag, child.attrib)
+                print(child.tag, child.attrib.values())
                
-            #for x in archivo[0].findall('posicion'):
-                #print(x.text)
-                
-            Lista=nodos(archivo,0)
-            
-            Lista.imprimir()
+            print(len(archivo))
             
 
            
