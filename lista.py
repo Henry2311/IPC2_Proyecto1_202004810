@@ -57,6 +57,8 @@ class dlinkedlist:
         while aux:
             print(aux.dato)
             aux = aux.next
+
+    
     
     def recorrer_final(self):
         aux = self.last
