@@ -30,7 +30,6 @@ class Camino:
 		while actual != None:
 			camino.insert(0, actual)
 			actual = self.vertices[actual].padre
-		#return [camino, self.vertices[b].costo]
 		return camino
 
 	def minimo(self, l):

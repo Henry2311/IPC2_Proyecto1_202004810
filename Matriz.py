@@ -72,53 +72,19 @@ class Matriz:
                     actual.valor = valor
                 actual = actual.derecha
             aux = aux.siguiente
-
-                
-
-    #recorre por filas
-    def imprimir(self):
-        eFila=self.eRows.primero
-        fila = ''
-        while eFila != None:
-
-            actual = eFila.acceso
-            while actual != None:
-                fila+='['+str(actual.fila+actual.columna)+']'
-                actual = actual.derecha
-                
-
-            print(fila)
-            fila=''
-            eFila = eFila.siguiente
-    
-    #recorre por columna    
-    def recorrerC(self):
-        eColumna = self.eColumns.primero
-        fila=''
-        while eColumna != None:
-            actual = eColumna.acceso
-            while actual != None:
-                fila+= '['+str(actual.fila+actual.columna)+']'
-                actual = actual.abajo
-            
-            print(fila)
-            fila=''
-            eColumna = eColumna.siguiente
-
-    #recorre por columna    
+   
     def valores(self):
         eColumna = self.eColumns.primero
-        fila=''
+        fila=' \t'
         while eColumna != None:
             actual = eColumna.acceso
             while actual != None:
                 fila+= '['+str(actual.valor)+']'
                 actual = actual.abajo
             
-            print(fila)
-            fila=''
+            print(fila+'')
+            fila=' \t'
             eColumna = eColumna.siguiente      
-
 
     def Graph(self,name):
         file = open(name+'.dot','w')

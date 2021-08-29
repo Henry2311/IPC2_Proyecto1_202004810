@@ -1,6 +1,5 @@
 import xml.etree.ElementTree as ET
-from xml.etree import ElementTree
-from xml.dom import minidom
+import time
 from Matriz import Matriz
 from terreno import terreno
 from lista import dlinkedlist
@@ -63,8 +62,6 @@ def recorrido(file,pos,dato):
     valor=[]
     prueba=[]
 
-    print('filas= '+str(dato.getDimM()))
-    print('columnas= '+str(dato.getDimN()))
     for c in file[pos].findall('posicion'):
         coordenadas.append(c.attrib.get('x')+c.attrib.get('y'))
         valor.append(int(c.text))
@@ -83,8 +80,7 @@ def recorrido(file,pos,dato):
             actual = actual.derecha
 
         aux=aux.siguiente
-    print('')
-    print('')
+    
     aux2=dato.getNodos().eColumns.primero
     while aux2 != None:
         actual=aux2.acceso
@@ -97,8 +93,7 @@ def recorrido(file,pos,dato):
     final=dato.getFinx()+dato.getFiny()
 
     g.dijkstra(inicio)
-    print(g.camino(inicio,final))
-
+    
     ruta_C=g.camino(inicio,final)
 
     ruta_F=[]
@@ -106,21 +101,18 @@ def recorrido(file,pos,dato):
     for c in ruta_C:
         ruta_F.append(ruta.get(c))
 
-    print(ruta_F)
     dato.setGas(ruta_F)
     gas=0
     for c in ruta_F:
         gas+=int(c)
     mostrar_recorrido(ruta_C,gas,dato)
     return prueba
-
-    
+   
 def mostrar_recorrido(ruta_C,gas,obj):
     R = Matriz()
     auxiliarX=[]
     coordenadaX=[]
     coordenaday=[]
-
 
     filas=int(obj.getDimM())
     columnas=int(obj.getDimN())
@@ -134,15 +126,9 @@ def mostrar_recorrido(ruta_C,gas,obj):
             coordenadaX.append(auxiliarX[i])
         else:
             coordenaday.append(auxiliarX[i])
-    print(coordenadaX)
-    print(coordenaday)
-    print('')
-    print('filas= '+str(filas))
-    print('columnas= '+str(columnas))
 
     obj.setRX(coordenadaX)
     obj.setRY(coordenaday)
-
 
     aux2=obj.getNodos().eColumns.primero
     while aux2 != None:
@@ -155,21 +141,29 @@ def mostrar_recorrido(ruta_C,gas,obj):
     for i in range(len(coordenadaX)):
         R.actualizar(coordenadaX[i],coordenaday[i],'1')
 
+    print('-------------'+obj.getNombre()+'-------------')
+    print('  >>Dimensiones del terreno: '+str(filas)+'x'+str(columnas))
+    print('  >>Posición de Inicio: ('+str(obj.getIniciox())+','+str(obj.getInicioy())+')')
+    print('  >>Posición Final:     ('+str(obj.getFinx())+','+str(obj.getFiny())+')')
+    print('  >>Combustible mínimo: '+str(gas))
+    print('  >>Ruta con menos consumo:')
+
+    for i in range(len(coordenadaX)):
+        print('              ('+str(coordenadaX[i])+','+coordenaday[i]+')')
     print('')
-    R.recorrerC()
-    print('')
+    print('  >>Mapa de la ruta:')
     R.valores()
-
-    
-
-    
+    print('')
+    print('  >>Mapa del terreno: ')
+    obj.getNodos().valores()
+   
 def write_xml(obj):
     gas=0
     for g in obj.getGas():
         gas+=g
     
     if gas == 0:
-        return print('AUN NO SE HA PROCESADO EL TERRENO')
+        return print('  >>AUN NO SE HA PROCESADO EL TERRENO<<')
     else:
         raiz=ET.Element('terreno',name=obj.getNombre())
         PI=ET.SubElement(raiz,'posicioninicio')
@@ -188,13 +182,21 @@ def write_xml(obj):
     
         estructura(raiz)
         doc = ET.ElementTree(raiz)
-        guardar = input('INGRESE RUTA PARA GUARDAR EL ARCHIVO: ')
+        guardar = input('  >>Ingrese una ruta para guardar el archivo: \n\t')
 
         try:
             doc.write(guardar)
+            time.sleep(1)
+            print('   >>>ESCRIBIENDO ARCHIVO<<<')
+            time.sleep(1)
+            print('   ...')
+            time.sleep(1)
+            print('   ...')
+            time.sleep(1)
+            print('   ...')
+            print('   >>>ARCHIVO CREADO CORRECTAMENTE<<<')
         except IOError as e:
             print(e)
-
 
 def estructura(root, tab='  '):
     aux = [(0, root)]
@@ -209,11 +211,36 @@ def estructura(root, tab='  '):
             e.tail = '\n' + tab * (line-1) 
         aux[0:0] = lista 
 
+def mensajes():
+    time.sleep(1)
+    print('   >>>CALCULANDO LA MEJOR RUTA<<<')
+    time.sleep(1)
+    print('   ...')
+    time.sleep(1)
+    print('   ...')
+    time.sleep(1)
+    print('   ...')
+    time.sleep(1)
+    print('   >>>CALCULANDO CANTIDAD DE COMBUSTIBLE<<<')
+    time.sleep(1)
+    print('   ...')
+    time.sleep(1)
+    print('   ...')
+    time.sleep(1)
+    print('   ...')
 
+def n_terrenos(archivo):
+    print('  >>Terrenos disponibles: ')
+    for child in archivo:
+        print('     >'+child.attrib.get('nombre'))
+    
 if __name__ == '__main__':
     auxiliar=False
     global archivo
     global ter
+    global combustible
+    ter=None
+    combustible=9999
     while auxiliar==False:
         print('------------------MENÚ------------------')
         print('|    1. CARGAR ARCHIVO                 |')
@@ -226,82 +253,135 @@ if __name__ == '__main__':
         opcion=input("Elija una Opción dentro del menú: \n")
 
         if opcion == '1':
-            root=input('INGRRESE LA RUTA DEL ARCHIVO:\n')
+            root=input('Ingrese la ruta del archivo: ')
             archivo=read_xml(root)
-            
-            for child in archivo:
-                print(child.tag, child.attrib.get('nombre'))
-            
             ter = crear_terreno(archivo)
-            
-            print(ter.size)
-            
-            
+
+            print('===============================')
+            print('  >>Terrenos cargados: '+str(ter.size))
+            for child in archivo:
+                print('     >'+child.attrib.get('nombre'))
 
         elif opcion == '2':
-            c = input('ingrese el nombre del terreno: ')
-            aux=ter.first
-            index=0
-            while aux:
-                if aux.dato.getNombre() == c:
-                    #aux.dato.getNodos().imprimir()
-                    print('')
-                    aux.dato.getNodos().recorrerC()
-                    print('')
-                    aux.dato.getNodos().valores()
-                    print('')
-                    prueba=recorrido(archivo,index,aux.dato)
-                    #for p in prueba:
-                        #print(p)
+            print('---------------------------------------------------')
+            if ter != None:
+                n_terrenos(archivo)
+                c = input('Ingrese el nombre del terreno a procesar: ')
 
-                    break
-                
+                if combustible>0:
+                    time.sleep(1)
+                    print('   >>>LOCALIZANDO TERRENO<<<')
+                    time.sleep(1)
+                    print('   ...')
+                    time.sleep(1)
+                    print('   ...')
+                    time.sleep(1)
+                    print('   ...')
 
-                index+=1
-                aux=aux.next
+                    aux=ter.first
+                    index=0
+                    while aux:
+                        if aux.dato.getNombre() == c:
+                            mensajes()
+                            prueba=recorrido(archivo,index,aux.dato)
+                        
+                            for x in aux.dato.getGas():
+                                combustible-=int(x)
+                            print('')
+                            print('  >>Combustible restante: '+str(combustible))
+
+                            break
+                        index+=1
+                        aux=aux.next
+                    else:
+                        print('   >>>TERRENO NO ENCONTRADO<<<')
+                else:
+                    print('   >>R2E2 SE HA QUEDADO SIN COMBUSTIBLE<<')
             else:
-                    print('TERRENO NO ENCONTRADO')
+                print('   >>>NO SE HA CARGADO EL ARCHIVO<<<')
+            
+            
+            print('---------------------------------------------------')
 
         elif opcion == '3':
-            c = input('ingrese el nombre del terreno: ')
-            aux=ter.first
-            index=0
-            while aux:
-                if aux.dato.getNombre() == c:
-                    write_xml(aux.dato)
-                    break
-                index+=1
-                aux=aux.next
-
+            print('---------------------------------------------------')
+            if ter != None:
+                n_terrenos(archivo)
+                c = input('Ingrese el nombre del terreno: ')
+                time.sleep(1)
+                print('   >>>LOCALIZANDO TERRENO<<<')
+                time.sleep(1)
+                print('   ...')
+                time.sleep(1)
+                print('   ...')
+                time.sleep(1)
+                print('   ...')
+                aux=ter.first
+                while aux:
+                    if aux.dato.getNombre() == c:
+                        write_xml(aux.dato)
+                        break
+                    index+=1
+                    aux=aux.next
+                else:
+                    print('   >>>TERRENO NO ENCONTRADO<<<')
+            else:
+                print('   >>>NO SE HA CARGADO EL ARCHIVO<<<')
+            
+            print('---------------------------------------------------')
 
         elif opcion == '4':
-            print('---------------------------------------------')
-            print('HENRY RONELY MENDOZA AGUILAR')
-            print('202004810')
-            print('INTRODUCCIÓN A LA PROGRAMACIÓN Y COMPUTACIÓN 2 SECCIÓN \"A\"')
-            print('INGENIERIA EN CIENCIAS Y SISTEMAS')
-            print('4TO SEMESTRE')
-            print('---------------------------------------------')
+            print('--------------------------------------------------------------')
+            print('  >>HENRY RONELY MENDOZA AGUILAR')
+            print('  >>202004810')
+            print('  >>INTRODUCCIÓN A LA PROGRAMACIÓN Y COMPUTACIÓN 2 SECCIÓN \"A\"')
+            print('  >>INGENIERIA EN CIENCIAS Y SISTEMAS')
+            print('  >>4TO SEMESTRE')
+            print('--------------------------------------------------------------')
 
         elif opcion == '5':
-            c = input('ingrese el nombre del terreno: ')
-            aux=ter.first
-        
-            while aux:
-                if aux.dato.getNombre() == c:
-
-                    aux.dato.getNodos().Graph(c)
-
-                    break
-                aux=aux.next
-            else:
-                print('TERRENO NO ENCONTRADO')
+            print('---------------------------------------------------')
+            if ter != None:
+                n_terrenos(archivo)
             
+                c = input('Ingrese el nombre del terreno: ')
+                time.sleep(1)
+                print('   >>>LOCALIZANDO TERRENO<<<')
+                time.sleep(1)
+                print('   ...')
+                time.sleep(1)
+                print('   ...')
+                time.sleep(1)
+                print('   ...')
 
+                aux=ter.first
+                while aux:
+                    if aux.dato.getNombre() == c:
 
+                        time.sleep(1)
+                        print('   >>>GENERANDO GRÁFICA<<<')
+                        time.sleep(1)
+                        print('   ...')
+                        time.sleep(1)
+                        print('   ...')
+                        time.sleep(1)
+                        print('   ...')
+
+                        aux.dato.getNodos().Graph(c)
+
+                        time.sleep(1)
+                        print('   >>>GRÁFICA GENERADA CORRECTAMENTE<<<')
+                        break
+                    aux=aux.next
+                else:
+                    print('   >>>TERRENO NO ENCONTRADO<<<')
+            else:
+                print('   >>>NO SE HA CARGADO EL ARCHIVO<<<')
+            
+            print('---------------------------------------------------')
+            
         elif opcion == '6':
-            print('PROGRAMA FINALIZADO')
+            print('   >>>PROGRAMA FINALIZADO<<<')
             auxiliar=True
         else:
-            print('Por favor ingrese un número')
-        
+            print('   >>>POR FAVOR INGRESE UN NÚMERO<<<')
