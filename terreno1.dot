@@ -1,0 +1,73 @@
+digraph terreno1{
+
+            label = "terreno1"
+            bgcolor = "#9DDEFC"
+            node[shape=ellipse fillcolor="#E6D4BE" style =filled]
+            fontsize="20"
+            
+        nodo11[label = 1]
+		nodo21[label = 1]
+		nodo31[label = 5]
+		nodo41[label = 3]
+		nodo51[label = 2]
+		nodo12[label = 4]
+		nodo22[label = 1]
+		nodo32[label = 4]
+		nodo42[label = 2]
+		nodo52[label = 6]
+		nodo13[label = 3]
+		nodo23[label = 1]
+		nodo33[label = 1]
+		nodo43[label = 3]
+		nodo53[label = 3]
+		nodo14[label = 5]
+		nodo24[label = 2]
+		nodo34[label = 3]
+		nodo44[label = 1]
+		nodo54[label = 2]
+		nodo15[label = 2]
+		nodo25[label = 1]
+		nodo35[label = 1]
+		nodo45[label = 1]
+		nodo55[label = 1]
+		nodo11->nodo12[arrowhead = none]
+		nodo12->nodo13[arrowhead = none]
+		nodo13->nodo14[arrowhead = none]
+		nodo14->nodo15[arrowhead = none]
+		nodo21->nodo22[arrowhead = none]
+		nodo22->nodo23[arrowhead = none]
+		nodo23->nodo24[arrowhead = none]
+		nodo24->nodo25[arrowhead = none]
+		nodo31->nodo32[arrowhead = none]
+		nodo32->nodo33[arrowhead = none]
+		nodo33->nodo34[arrowhead = none]
+		nodo34->nodo35[arrowhead = none]
+		nodo41->nodo42[arrowhead = none]
+		nodo42->nodo43[arrowhead = none]
+		nodo43->nodo44[arrowhead = none]
+		nodo44->nodo45[arrowhead = none]
+		nodo51->nodo52[arrowhead = none]
+		nodo52->nodo53[arrowhead = none]
+		nodo53->nodo54[arrowhead = none]
+		nodo54->nodo55[arrowhead = none]
+		rank = same{nodo11->nodo21[arrowhead = none]}
+		rank = same{nodo21->nodo31[arrowhead = none]}
+		rank = same{nodo31->nodo41[arrowhead = none]}
+		rank = same{nodo41->nodo51[arrowhead = none]}
+		rank = same{nodo12->nodo22[arrowhead = none]}
+		rank = same{nodo22->nodo32[arrowhead = none]}
+		rank = same{nodo32->nodo42[arrowhead = none]}
+		rank = same{nodo42->nodo52[arrowhead = none]}
+		rank = same{nodo13->nodo23[arrowhead = none]}
+		rank = same{nodo23->nodo33[arrowhead = none]}
+		rank = same{nodo33->nodo43[arrowhead = none]}
+		rank = same{nodo43->nodo53[arrowhead = none]}
+		rank = same{nodo14->nodo24[arrowhead = none]}
+		rank = same{nodo24->nodo34[arrowhead = none]}
+		rank = same{nodo34->nodo44[arrowhead = none]}
+		rank = same{nodo44->nodo54[arrowhead = none]}
+		rank = same{nodo15->nodo25[arrowhead = none]}
+		rank = same{nodo25->nodo35[arrowhead = none]}
+		rank = same{nodo35->nodo45[arrowhead = none]}
+		rank = same{nodo45->nodo55[arrowhead = none]}
+		}
